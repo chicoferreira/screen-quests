@@ -8,14 +8,20 @@ import java.util.List;
 
 public class QuestObjective {
 
+    private String objectiveCodeName;
     private int amount;
     private List<ItemRequirement> requirements;
     private QuestObjectiveTrigger questObjectiveTrigger;
 
-    public QuestObjective(int amount, List<ItemRequirement> requirements, QuestObjectiveTrigger questObjectiveTrigger) {
+    public QuestObjective(String objectiveCodeName, int amount, List<ItemRequirement> requirements, QuestObjectiveTrigger questObjectiveTrigger) {
+        this.objectiveCodeName = objectiveCodeName;
         this.amount = amount;
         this.requirements = requirements;
         this.questObjectiveTrigger = questObjectiveTrigger;
+    }
+
+    public String getObjectiveCodeName() {
+        return objectiveCodeName;
     }
 
     public int getAmount() {

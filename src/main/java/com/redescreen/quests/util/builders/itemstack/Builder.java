@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class Builder<GenericBuilder extends Builder, GenericMeta extends ItemMeta> {
+public abstract class Builder<B extends Builder, M extends ItemMeta> {
 
     protected ItemStack itemStack;
-    protected GenericMeta itemMeta;
+    protected M itemMeta;
 
     public Builder(ItemStack itemStack) {
         this.itemStack = itemStack;
@@ -23,51 +23,51 @@ public abstract class Builder<GenericBuilder extends Builder, GenericMeta extend
         this(new ItemStack(material));
     }
 
-    public GenericBuilder amount(int amount) {
+    public B amount(int amount) {
         this.itemStack.setAmount(amount);
         return builder();
     }
 
-    public GenericBuilder type(Material material) {
+    public B type(Material material) {
         this.itemStack.setType(material);
         this.updateItemMeta();
         return builder();
     }
 
-    protected void changeItemMeta(Consumer<GenericMeta> itemMetaConsumer) {
+    protected void changeItemMeta(Consumer<M> itemMetaConsumer) {
         itemMetaConsumer.accept(itemMeta);
         itemStack.setItemMeta(itemMeta);
     }
 
-    public GenericBuilder durability(short durability) {
+    public B durability(short durability) {
         this.itemStack.setDurability(durability);
         this.updateItemMeta();
         return builder();
     }
 
-    public GenericBuilder displayName(String displayName) {
-        this.changeItemMeta(itemMeta -> itemMeta.setDisplayName(displayName));
+    public B displayName(String displayName) {
+        this.changeItemMeta(meta -> meta.setDisplayName(displayName));
         return builder();
     }
 
-    public GenericBuilder lore(List<String> lore) {
-        this.changeItemMeta(itemMeta -> itemMeta.setLore(lore));
+    public B lore(List<String> lore) {
+        this.changeItemMeta(meta -> meta.setLore(lore));
         return builder();
     }
 
-    public GenericBuilder lore(String... lore) {
+    public B lore(String... lore) {
         return lore(Arrays.asList(lore));
     }
 
-    public GenericBuilder flag(ItemFlag... itemFlag) {
-        this.changeItemMeta(itemMeta -> itemMeta.addItemFlags(itemFlag));
+    public B flag(ItemFlag... itemFlag) {
+        this.changeItemMeta(meta -> meta.addItemFlags(itemFlag));
         return builder();
     }
 
-    protected abstract GenericBuilder builder();
+    protected abstract B builder();
 
     private void updateItemMeta() {
-        this.itemMeta = (GenericMeta) this.itemStack.getItemMeta();
+        this.itemMeta = (M) this.itemStack.getItemMeta();
     }
 
     public ItemStack build() {
