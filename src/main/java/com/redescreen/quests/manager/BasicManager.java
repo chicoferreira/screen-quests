@@ -19,8 +19,8 @@ public class BasicManager<T> implements Manager<T> {
     }
 
     @Override
-    public void put(String key, T value) {
-        this.map.put(key, value);
+    public T put(String key, T value) {
+        return this.map.putIfAbsent(key, value);
     }
 
     @Override

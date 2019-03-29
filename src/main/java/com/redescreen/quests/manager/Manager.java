@@ -6,7 +6,7 @@ public interface Manager<T> {
 
     T get(String name);
 
-    void put(String key, T t);
+    T put(String key, T t);
 
     void delete(String name);
 

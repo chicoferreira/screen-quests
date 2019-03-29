@@ -1,3 +1,13 @@
 name: ScreenQuests
 main: com.redescreen.quests.Quests
-version: 1.0
+version: 1.0-SNAPSHOT
+commands:
+    quests:
+        aliases:
+            - quest
+            - missões
+            - missoes
+            - missão
+            - missao
+            - mission
+            - missions

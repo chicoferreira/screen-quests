@@ -1,19 +1,14 @@
 package com.redescreen.quests;
 
-import com.redescreen.quests.user.UserManager;
+import com.redescreen.quests.command.QuestCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Quests extends JavaPlugin {
 
     private static Quests instance;
-    private UserManager userManager;
 
     public static Quests getInstance() {
         return instance;
-    }
-
-    public static UserManager getUserManager() {
-        return getInstance().userManager;
     }
 
     @Override
@@ -25,7 +20,10 @@ public class Quests extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        QuestCommandManager commandManager = QuestCommandManager.getInstance();
+        getCommand(Defaults.COMMAND_NAME).setExecutor(commandManager.setupCommand());
     }
+
 
     @Override
     public void onDisable() {
