@@ -1,0 +1,74 @@
+database:
+    url: "jdbc:mysql://localhost:3306?useTimezone=true&serverTimezone=UTC"
+    username: root
+    password: ~
+quests:
+    1:
+        title: "A primeira de muitas..."
+        description: "Comece aqui a sua jornada com várias missões que o nosso servidor lhe proporciona."
+        iconMaterial: IRON_PICKAXE
+        objectives:
+            1:
+                amount: 25
+                displayProgress: "Coloque &f<amount> granitos"
+                requiredMaterial: STONE:1
+                trigger: PLACE_BLOCK
+            2:
+                amount: 10
+                displayProgress: "Quebre &f<amount> lapis-lazuli"
+                requiredMaterial: LAPIS_ORE
+                trigger: BREAK_BLOCK
+        rewards:
+            1:
+                type: command
+                value:
+                    command: "say Exemplo de recompensa."
+            2:
+                type: giveItem
+                value:
+                    amount: 1
+                    displayName: Picaretinha
+                    durability: 0
+                    enchantments:
+                        - "DIG_SPEED:1"
+                        - "LOOT_BONUS_BLOCKS:1"
+                        - "DURABILITY:1"
+                    lore:
+                        - "&7Divirta-se minerando."
+                    material: DIAMOND_PICKAXE
+    2:
+        title: "Abrigo"
+        description: "Está se sentindo sozinho? Vamos construir um abrigo para poder passar a noite."
+        iconMaterial: BRICK
+        objectives:
+            1:
+                amount: 5
+                displayProgress: "Coloque &f<amount> tijolos"
+                requiredMaterial: BRICK
+                trigger: PLACE_BLOCK
+        rewards:
+            1:
+                type: command
+                value:
+                    command: "cash give <user> 1000"
+    3:
+        title: "Pescada?"
+        description: "Comece aqui a sua jornada com várias missões que o nosso servidor lhe proporciona."
+        iconMaterial: FISHING_ROD
+        objectives:
+            1:
+                amount: 5
+                displayProgress: "Pesque &f<amount> vezes"
+                requiredMaterial: ~
+                trigger: FISH
+        rewards: []
+    4:
+        title: "Um presentinho"
+        description: "Pegue este presentinho. Acho que você merece."
+        iconMaterial: CAKE
+        objectives: []
+        rewards:
+            1:
+                type: command
+                value:
+                    material: CAKE
