@@ -18,4 +18,8 @@ public class ArgumentModel {
         return optional;
     }
 
+    @Override
+    public String toString() {
+        return (isOptional() ? "(" : "<") + this.name + (isOptional() ? ")" : ">");
+    }
 }

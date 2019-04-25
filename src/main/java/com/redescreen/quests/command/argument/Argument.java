@@ -1,7 +1,8 @@
 package com.redescreen.quests.command.argument;
 
-public class Argument {
+import java.util.Optional;
 
+public class Argument {
 
     private ArgumentModel model;
     private int index;
@@ -21,7 +22,7 @@ public class Argument {
         return index;
     }
 
-    public String getContent() {
-        return content;
+    public Optional<String> getContent() {
+        return Optional.ofNullable(content);
     }
 }

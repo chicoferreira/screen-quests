@@ -1,9 +1,10 @@
 package com.redescreen.quests.quest.objective.reward;
 
+import com.redescreen.quests.user.User;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 public enum QuestRewardType {
@@ -15,14 +16,14 @@ public enum QuestRewardType {
     }),
     GIVE_ITEM("giveItem", (player, object) -> {
         if (object instanceof ItemStack) {
-            player.getInventory().addItem((ItemStack) object);
+            player.bukkit().getInventory().addItem((ItemStack) object);
         }
     });
 
     private String name;
-    private BiConsumer<Player, Object> playerConsumer;
+    private BiConsumer<User, Object> playerConsumer;
 
-    QuestRewardType(String name, BiConsumer<Player, Object> playerConsumer) {
+    QuestRewardType(String name, BiConsumer<User, Object> playerConsumer) {
         this.name = name;
         this.playerConsumer = playerConsumer;
     }
@@ -31,7 +32,11 @@ public enum QuestRewardType {
         return name;
     }
 
-    public BiConsumer<Player, Object> getPlayerConsumer() {
+    public static QuestRewardType get(String name) {
+        return Arrays.stream(values()).filter(value -> value.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public BiConsumer<User, Object> getPlayerConsumer() {
         return playerConsumer;
     }
 }

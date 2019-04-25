@@ -29,6 +29,11 @@ public class BasicManager<T> implements Manager<T> {
     }
 
     @Override
+    public Map<String, T> getMap() {
+        return map;
+    }
+
+    @Override
     public List<T> getAll() {
         return new ArrayList<>(map.values());
     }

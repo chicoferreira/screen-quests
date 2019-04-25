@@ -1,10 +1,12 @@
 package com.redescreen.quests.command;
 
 import com.redescreen.quests.command.bukkit.QuestBukkitCommand;
+import com.redescreen.quests.command.commands.QuestCompleteCommand;
 import com.redescreen.quests.command.commands.QuestDefaultCommand;
 import com.redescreen.quests.command.commands.QuestHelpCommand;
-import com.redescreen.quests.command.commands.QuestQuestsCommand;
 import com.redescreen.quests.manager.BasicManager;
+
+import java.util.Optional;
 
 public class QuestCommandManager extends BasicManager<QuestCommand> {
 
@@ -14,7 +16,7 @@ public class QuestCommandManager extends BasicManager<QuestCommand> {
     private QuestCommandManager() {
         register(defaultCommand(new QuestDefaultCommand()));
         register(new QuestHelpCommand());
-        register(new QuestQuestsCommand());
+        register(new QuestCompleteCommand());
     }
 
     public static QuestCommandManager getInstance() {
@@ -29,9 +31,12 @@ public class QuestCommandManager extends BasicManager<QuestCommand> {
         QuestCommand questCommand = super.get(name.toLowerCase());
         if (questCommand == null) {
             for (QuestCommand command : super.getAll()) {
-                for (String alias : command.getAliases()) {
-                    if (alias.equalsIgnoreCase(name)) {
-                        questCommand = command;
+                Optional<String[]> aliases = command.getAliases();
+                if (aliases.isPresent()) {
+                    for (String alias : aliases.get()) {
+                        if (alias.equalsIgnoreCase(name)) {
+                            questCommand = command;
+                        }
                     }
                 }
             }

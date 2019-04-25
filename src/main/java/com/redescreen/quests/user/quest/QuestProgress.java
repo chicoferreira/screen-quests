@@ -45,9 +45,19 @@ public class QuestProgress {
         return progressMap.getOrDefault(questObjective, 0);
     }
 
-    public int get(String questObjectiveCodeName) {
-        return get(this.getQuestObjective(questObjectiveCodeName));
+    public boolean isFinished() {
+        return progressMap.entrySet()
+                .stream()
+                .noneMatch(questObjectiveIntegerEntry ->
+                        questObjectiveIntegerEntry.getValue() < questObjectiveIntegerEntry.getKey().getAmount()
+                );
     }
 
+    public void finish() {
+        relatedQuest.getQuestObjectives().forEach(questObjective -> progressMap.put(questObjective, questObjective.getAmount()));
+    }
 
+    public Map<QuestObjective, Integer> getProgressMap() {
+        return progressMap;
+    }
 }

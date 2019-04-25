@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.redescreen.quests.Quests;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,13 +18,12 @@ public class SkullBuilder extends Builder<SkullBuilder, SkullMeta> {
 
     public SkullBuilder(ItemStack itemStack) {
         super(itemStack);
-        if (super.itemStack.getType() != Material.SKULL_ITEM) {
-            super.type(Material.SKULL_ITEM);
-        }
+        super.type(Material.SKULL_ITEM);
+        super.durability((short) 3);
     }
 
     public SkullBuilder() {
-        super(Material.SKULL_ITEM);
+        super(new ItemStack(Material.SKULL_ITEM, 1, (short) 3));
     }
 
     @Override
@@ -32,8 +32,21 @@ public class SkullBuilder extends Builder<SkullBuilder, SkullMeta> {
     }
 
     public SkullBuilder owner(String name) {
-        this.changeItemMeta(skullMeta -> skullMeta.setOwner(name));
-        return this;
+        return gameProfile(MinecraftServer.getServer().getUserCache().getProfile(name));
+    }
+
+    public SkullBuilder gameProfile(GameProfile gameProfile) {
+        this.changeItemMeta(
+                skullMeta -> {
+                    try {
+                        Field field = skullMeta.getClass().getDeclaredField("profile");
+                        field.setAccessible(true);
+                        field.set(skullMeta, gameProfile);
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        Quests.getInstance().getLogger().log(Level.WARNING, "Couldn't change profile field from SkullMeta:", e);
+                    }
+                });
+        return builder();
     }
 
     public SkullBuilder textures(String textures) {
@@ -47,15 +60,9 @@ public class SkullBuilder extends Builder<SkullBuilder, SkullMeta> {
                                         String.format("{textures:{SKIN:{url:\"%s\"}}}", textures).getBytes());
                         propertyMap.put("textures", new Property("textures", new String(encodedData)));
 
-                        try {
-                            Field field = skullMeta.getClass().getDeclaredField("profile");
-                            field.setAccessible(true);
-                            field.set(skullMeta, profile);
-                        } catch (NoSuchFieldException | IllegalAccessException e) {
-                            Quests.getInstance().getLogger().log(Level.WARNING, "Couldn't change profile field from SkullMeta:", e);
-                        }
+                        this.gameProfile(profile);
                     }
                 });
-        return this;
+        return builder();
     }
 }

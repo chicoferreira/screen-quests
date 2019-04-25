@@ -1,22 +1,22 @@
 package com.redescreen.quests.quest.objective;
 
-import com.redescreen.quests.quest.objective.requirement.ItemRequirement;
 import com.redescreen.quests.quest.objective.trigger.QuestObjectiveTrigger;
+import com.redescreen.quests.util.BlockMaterial;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public class QuestObjective {
 
     private String objectiveCodeName;
+    private String displayQuestProgress;
     private int amount;
-    private List<ItemRequirement> requirements;
+    private BlockMaterial materialRequirement;
     private QuestObjectiveTrigger questObjectiveTrigger;
 
-    public QuestObjective(String objectiveCodeName, int amount, List<ItemRequirement> requirements, QuestObjectiveTrigger questObjectiveTrigger) {
+    public QuestObjective(String objectiveCodeName, String displayQuestProgress, int amount, BlockMaterial materialRequirement, QuestObjectiveTrigger questObjectiveTrigger) {
         this.objectiveCodeName = objectiveCodeName;
+        this.displayQuestProgress = displayQuestProgress;
         this.amount = amount;
-        this.requirements = requirements;
+        this.materialRequirement = materialRequirement;
         this.questObjectiveTrigger = questObjectiveTrigger;
     }
 
@@ -33,16 +33,14 @@ public class QuestObjective {
     }
 
     public boolean passes(ItemStack itemStack) {
-        return requirements.stream().allMatch(requirement -> requirement.passes(itemStack));
+        return materialRequirement.matches(itemStack);
     }
 
-    public List<ItemRequirement> getRequirements() {
-        return requirements;
+    public BlockMaterial getMaterialRequirement() {
+        return materialRequirement;
     }
 
-    public void addRequirement(ItemRequirement itemRequirement) {
-        this.requirements.add(itemRequirement);
+    public String getDisplayQuestProgress() {
+        return displayQuestProgress;
     }
-
-
 }

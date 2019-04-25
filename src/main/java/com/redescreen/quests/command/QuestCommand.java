@@ -1,9 +1,11 @@
 package com.redescreen.quests.command;
 
+import com.redescreen.quests.command.argument.Argument;
 import com.redescreen.quests.command.argument.ArgumentModel;
 import com.redescreen.quests.user.User;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ public abstract class QuestCommand {
         this.name = name;
     }
 
-    public abstract void execute(User user);
+    public abstract void execute(User user, Map<String, Argument> argumentMap);
 
     public final String getName() {
         return name;
@@ -37,8 +39,17 @@ public abstract class QuestCommand {
         return Optional.ofNullable(argumentModels);
     }
 
-    public final String[] getAliases() {
-        return aliases;
+    public final Optional<String[]> getAliases() {
+        return Optional.ofNullable(aliases);
+    }
+
+    public final int getRequiredArgumentsLenght() {
+        return getArgumentModels()
+                .map(models -> Arrays.stream(models)
+                        .filter(argumentModel -> !argumentModel.isOptional())
+                        .count())
+                .orElse(0L)
+                .intValue();
     }
 
     public final void permission(String permission) {

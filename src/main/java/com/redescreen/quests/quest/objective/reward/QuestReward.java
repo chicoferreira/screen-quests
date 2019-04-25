@@ -1,6 +1,6 @@
 package com.redescreen.quests.quest.objective.reward;
 
-import org.bukkit.entity.Player;
+import com.redescreen.quests.user.User;
 
 public class QuestReward {
 
@@ -12,8 +12,8 @@ public class QuestReward {
         this.type = type;
     }
 
-    public void give(Player player) {
-        type.getPlayerConsumer().accept(player, object);
+    public void give(User user) {
+        type.getPlayerConsumer().accept(user, object);
     }
 
 }
